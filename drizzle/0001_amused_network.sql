@@ -1,0 +1,1 @@
+ALTER TABLE `stamp_license_letter` RENAME COLUMN `LicenseID` TO `LicenceID`;
