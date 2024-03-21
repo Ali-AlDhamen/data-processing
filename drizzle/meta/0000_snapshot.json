@@ -1,18 +1,18 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "543631dc-8511-4ab2-9970-0090a0884052",
+  "id": "42e97bf6-3b7d-4501-944f-19117e26a609",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account_request": {
       "name": "account_request",
       "columns": {
-        "RequestID": {
-          "name": "RequestID",
+        "id": {
+          "name": "id",
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "CompanyName": {
           "name": "CompanyName",
@@ -55,22 +55,43 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "RequestID": {
+          "name": "RequestID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "account_request_RequestID_request_RequestID_fk": {
+          "name": "account_request_RequestID_request_RequestID_fk",
+          "tableFrom": "account_request",
+          "tableTo": "request",
+          "columnsFrom": [
+            "RequestID"
+          ],
+          "columnsTo": [
+            "RequestID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "add_new_activity": {
       "name": "add_new_activity",
       "columns": {
-        "RequestID": {
-          "name": "RequestID",
+        "id": {
+          "name": "id",
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "CompanyName": {
           "name": "CompanyName",
@@ -92,22 +113,43 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "RequestID": {
+          "name": "RequestID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "add_new_activity_RequestID_request_RequestID_fk": {
+          "name": "add_new_activity_RequestID_request_RequestID_fk",
+          "tableFrom": "add_new_activity",
+          "tableTo": "request",
+          "columnsFrom": [
+            "RequestID"
+          ],
+          "columnsTo": [
+            "RequestID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "inspection_request": {
       "name": "inspection_request",
       "columns": {
-        "RequestID": {
-          "name": "RequestID",
+        "id": {
+          "name": "id",
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "CompanyName": {
           "name": "CompanyName",
@@ -136,22 +178,43 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "RequestID": {
+          "name": "RequestID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "inspection_request_RequestID_request_RequestID_fk": {
+          "name": "inspection_request_RequestID_request_RequestID_fk",
+          "tableFrom": "inspection_request",
+          "tableTo": "request",
+          "columnsFrom": [
+            "RequestID"
+          ],
+          "columnsTo": [
+            "RequestID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "new_license": {
       "name": "new_license",
       "columns": {
-        "RequestID": {
-          "name": "RequestID",
+        "id": {
+          "name": "id",
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "CompanyName": {
           "name": "CompanyName",
@@ -201,10 +264,31 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "RequestID": {
+          "name": "RequestID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "new_license_RequestID_request_RequestID_fk": {
+          "name": "new_license_RequestID_request_RequestID_fk",
+          "tableFrom": "new_license",
+          "tableTo": "request",
+          "columnsFrom": [
+            "RequestID"
+          ],
+          "columnsTo": [
+            "RequestID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -248,12 +332,12 @@
     "stamp_license_letter": {
       "name": "stamp_license_letter",
       "columns": {
-        "RequestID": {
-          "name": "RequestID",
+        "id": {
+          "name": "id",
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "CompanyName": {
           "name": "CompanyName",
@@ -262,8 +346,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "LicenseID": {
-          "name": "LicenseID",
+        "LicenceID": {
+          "name": "LicenceID",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -275,10 +359,31 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "RequestID": {
+          "name": "RequestID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "stamp_license_letter_RequestID_request_RequestID_fk": {
+          "name": "stamp_license_letter_RequestID_request_RequestID_fk",
+          "tableFrom": "stamp_license_letter",
+          "tableTo": "request",
+          "columnsFrom": [
+            "RequestID"
+          ],
+          "columnsTo": [
+            "RequestID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
