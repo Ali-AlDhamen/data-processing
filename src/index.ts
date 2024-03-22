@@ -24,11 +24,21 @@ const app = new Elysia().use(swagger(
   }
   }
 ));
-app
-  .post("/api/v1/upload", uploadFileHandler, {
+app.group('/api/v1', (app) =>
+        app
+    .post("/upload", uploadFileHandler, {
+    body: t.Object({
+      file: t.File(
+        {
+          type: ['text/csv'],          
+        },
+        
+      )
+    }),
     detail: {
       tags: ['Upload'],
-      summary: 'Upload csv file to process data and store in database and return amount of data uploaded and time taken to upload',
+      summary: 'Upload csv file to process data and store in database',
+      description: 'return amount of data uploaded and time taken to upload',
       requestBody: {
         content: {
           'multipart/form-data': {
@@ -47,58 +57,65 @@ app
       responses: {
         '200': {
           description: 'File uploaded successfully'
+        },
+        '400': {
+          description: 'Bad request'
+        },
+        '422': {
+          description: 'Unprocessable Entity, Expected csv file'
+        },
+        '500': {
+          description: 'Internal server error'
         }
+
       }
     }
+  
   })
-  .delete("/api/v1/delete", deleteDataHandler, {
+  .delete("/requests", deleteDataHandler, {
     detail: {
       tags: ['Delete'],
       summary: 'Delete all data in the database',
       responses: {
         '200': {
           description: 'Data deleted successfully'
+        },
+        '500': {
+          description: 'Internal server error'
         }
       }
     }
   })
-  .get("/api/v1/requests/:requestTable", requestTableHandler, {
+  .get("/requests/:requestTable", requestTableHandler, {
     detail: {
       tags: ['Request'],
       summary: 'Get all data from a specific table in the database',
       description: 'only accepts requestTable as a parameter, which is the name of the table in the database. e.g /api/v1/requests/newLicense. only accepts request, newLicense, accountRequest, inspectionRequest, addNewActivity, stampLicenseLetter as requestTable.',
-      requestBody: {
-        content: {
-          'application/json': {
-            schema: {
-              type: 'object',
-              properties: {
-                requestTable: {
-                  type: 'string',
-                  enum: ['request', 'newLicense', 'accountRequest', 'inspectionRequest', 'addNewActivity', 'stampLicenseLetter']
-                }
-              }
-            }
-          }
-        }
-      
-      },
       responses: {
         "200": {
           description: "Data retrieved successfully",
-        },       
+        },
+        "400": {
+          description: "Bad request",
+        },
+      
+        "500": {
+          description: "Internal server error",
+        }       
       }
     }
   })
-  .get("/api/v1/report", reportHandler, {
+  .get("/report", reportHandler, {
     detail: {
       tags: ['Request'],
       summary: 'Get all data from all tables in the database',
       responses: {
         "200": {
           description: "Data retrieved successfully",
-        },       
+        },
+        "500": {
+          description: "Internal server error",
+        }  
       }
     }
-  })
-  .listen(PORT);
+  })).listen(PORT);

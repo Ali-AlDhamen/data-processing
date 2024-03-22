@@ -1,15 +1,8 @@
 import parse from "csv-simple-parser";
-import {
-  AccountRequest,
-  AddNewActivity,
-  IRequest,
-  InspectionRequest,
-  NewLicense,
-  StampLicenseLetter,
-} from "../types";
 import * as schema from "../schemas/schema";
 import { db } from "../database/db";
 import processRequests from "../helpers/processRequests";
+import fs from "fs";
 import {
   processTables,
   transformAccountRequest,
@@ -18,17 +11,18 @@ import {
   transformStampLicenseLetter,
   transformAddNewActivity,
 } from "../helpers";
+import { CustomError, handleError } from "../errors";
 
 const uploadFileHandler = async (req: Request) => {
   try {
     const startTime = Date.now();
-    
+
     // @ts-ignore
     if (!req.body || !req.body.file) {
-      throw new Error("No file uploaded");
+      throw new CustomError("No file uploaded", 400);
     }
-    
-    // @ts-ignore
+
+  // @ts-ignore
     const file = req.body.file;
 
     const data = parse(await file.text(), {
@@ -55,22 +49,25 @@ const uploadFileHandler = async (req: Request) => {
       transformStampLicenseLetter
     );
 
-    // insert data to database
-    await db.insert(schema.request).values(requests).execute();
-    await db.insert(schema.newLicense).values(newLicenses).execute();
-    await db.insert(schema.accountRequest).values(accountRequests).execute();
-    await db
-      .insert(schema.inspectionRequest)
-      .values(inspectionRequests)
-      .execute();
-    await db.insert(schema.addNewActivity).values(addNewActivities).execute();
-    await db
-      .insert(schema.stampLicenseLetter)
-      .values(stampLicenseLetters)
-      .execute();
+   
+    await db.transaction(async (db) => {
+      await db.insert(schema.request).values(requests).execute();
+      await db.insert(schema.newLicense).values(newLicenses).execute();
+      await db.insert(schema.accountRequest).values(accountRequests).execute();
+      await db
+        .insert(schema.inspectionRequest)
+        .values(inspectionRequests)
+        .execute();
+      await db.insert(schema.addNewActivity).values(addNewActivities).execute();
+      await db
+        .insert(schema.stampLicenseLetter)
+        .values(stampLicenseLetters)
+        .execute();
+    });
 
     const endTime = Date.now();
-    return {
+
+    const ResponseJson = JSON.stringify( {
       status: 200,
       message: "Data uploaded successfully",
       timeTaken: endTime - startTime + "ms",
@@ -94,12 +91,10 @@ const uploadFileHandler = async (req: Request) => {
           amount: stampLicenseLetters.length,
         },
       },
-    };
+    });
+    return new Response(ResponseJson, { status: 200 });
   } catch (error: any) {
-    return {
-      status: 500,
-      message: error.message,
-    };
+    return handleError(error);
   }
 };
 

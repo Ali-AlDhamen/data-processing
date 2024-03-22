@@ -1,16 +1,18 @@
 import { db } from "../database/db";
+import { handleError } from "../errors";
 import * as schema from "../schemas/schema";
 
 
 const reportHandler = async (req: Request) => {
     try {
+      
       const newLicenseData = await db.select().from(schema.newLicense).all();
       const accountRequestData = await db.select().from(schema.accountRequest).all();
       const inspectionRequestData = await db.select().from(schema.inspectionRequest).all();
       const addNewActivityData = await db.select().from(schema.addNewActivity).all();
       const stampLicenseLetterData = await db.select().from(schema.stampLicenseLetter).all();
 
-      return {
+      const responseJson = JSON.stringify({
         status: 200,
         data: {
           NewLicense: {
@@ -34,12 +36,10 @@ const reportHandler = async (req: Request) => {
             data: stampLicenseLetterData,
           },
         },
-      };
+      });
+      return new Response(responseJson, {status: 200})
     } catch (error) {
-      return {
-        status: 500,
-        message: "Internal server error",
-      };
+      return handleError(error);
     }
   }
 

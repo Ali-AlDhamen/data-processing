@@ -1,5 +1,14 @@
 import { z } from "zod";
-import { AddNewActivity , InspectionRequest, AccountRequest, NewLicense, StampLicenseLetter} from "../types";
+import { AddNewActivity , InspectionRequest, AccountRequest, NewLicense, StampLicenseLetter, IRequest} from "../types";
+
+
+
+const requestSchema:  z.ZodType<IRequest>  = z.object({
+    requestID: z.number(),
+    requestType: z.number(),
+    requestStatus:  z.number(),
+    requestData:  z.string()
+});
 
 const addNewActivitySchema:  z.ZodType<AddNewActivity>  = z.object({
     CompanyName: z.string(),
@@ -41,6 +50,7 @@ const stampLicenseLetterSchema:  z.ZodType<StampLicenseLetter>  = z.object({
 });
 
 export {
+    requestSchema,
     addNewActivitySchema,
     inspectionRequestSchema,
     accountRequestSchema,

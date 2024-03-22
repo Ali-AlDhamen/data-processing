@@ -1,3 +1,4 @@
+import { CustomError } from "../errors";
 import {
   AccountRequest,
   IRequest,
@@ -29,7 +30,7 @@ const transformNewLicense = (request: IRequest, data: NewLicense) => {
     };
     return newLicense;
   } catch (error) {
-    throw new Error("Invalid data for new license request.");
+    throw new CustomError("Invalid data for new license request.", 400);
   }
 };
 
@@ -50,7 +51,7 @@ const transformAccountRequest = (request: IRequest, data: AccountRequest) => {
 
     return accountRequest;
   } catch (error) {
-    throw new Error("Invalid data for account request.");
+    throw new CustomError("Invalid data for account request.", 400);
   }
 };
 
@@ -71,7 +72,7 @@ const transformInspectionRequest = (
 
     return inspectionRequest;
   } catch (error) {
-    throw new Error("Invalid data for inspection request.");
+    throw new CustomError("Invalid data for inspection request.", 400);
   }
 };
 
@@ -89,7 +90,7 @@ const transformAddNewActivity = (request: IRequest, data: AddNewActivity) => {
 
     return addNewActivity;
   } catch (error) {
-    throw new Error("Invalid data for add new activity request.");
+    throw new CustomError("Invalid data for add new activity request.", 400);
   }
 };
 
@@ -109,7 +110,7 @@ const transformStampLicenseLetter = (
 
     return stampLicenseLetter;
   } catch (error) {
-    throw new Error("Invalid data for stamp license letter request.");
+    throw new CustomError("Invalid data for stamp license letter request.", 400);
   }
 };
 
