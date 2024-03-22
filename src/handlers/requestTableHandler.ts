@@ -1,5 +1,5 @@
 import { db } from "../database/db";
-import { handleError } from "../errors";
+import { CustomError, handleError } from "../errors";
 import * as schema from "../schemas/schema";
 
 const requestTableHandler = ({
@@ -18,10 +18,7 @@ const requestTableHandler = ({
       }
     });
     if (!found) {
-      return {
-        status: 400,
-        message: "Invalid request table",
-      };
+      throw new CustomError("Invalid request table", 400);
     }
 
     const requests = db
